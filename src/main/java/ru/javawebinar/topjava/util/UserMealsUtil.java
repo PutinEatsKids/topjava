@@ -35,14 +35,12 @@ public class UserMealsUtil {
             caloriesPerEachDay.put(mealDate, caloriesPerEachDay.getOrDefault(mealDate, 0) + userMeal.getCalories());
         }
         for (UserMeal userMeal : meals) {
-            LocalDate mealDate = userMeal.getDateTime().toLocalDate();
-            LocalTime mealTime = userMeal.getDateTime().toLocalTime();
-            if (mealTime.compareTo(startTime) >= 0 && mealTime.compareTo(endTime) < 0) {
+            if (TimeUtil.isBetweenHalfOpen(userMeal.getDateTime().toLocalTime(), startTime, endTime)) {
                 userMealWithExcesses.add(new UserMealWithExcess(
                         userMeal.getDateTime(),
                         userMeal.getDescription(),
                         userMeal.getCalories(),
-                        caloriesPerEachDay.get(mealDate) > caloriesPerDay
+                        caloriesPerEachDay.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay
                         ));
             }
         }
